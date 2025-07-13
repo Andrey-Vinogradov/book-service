@@ -1,3 +1,5 @@
+package com.example.bookservice;
+
 public class Book {
     private final int id;
     private final String name;
@@ -12,10 +14,21 @@ public class Book {
     }
 
 
-    public int getId() { return id; }
-    public String getName() { return name; }
-    public String getAuthor() { return author; }
-    public String getGenre() { return genre; }
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public String getGenre() {
+        return genre;
+    }
 
     @Override
     public String toString() {
