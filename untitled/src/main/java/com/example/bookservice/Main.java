@@ -1,8 +1,11 @@
 package com.example.bookservice;
 
+import com.example.bookservice.repository.CollectionBookRepositoryImpl;
+import com.example.bookservice.service.BookService;
+
 public class Main {
     public static void main(String[] args) {
-        BookService service = new BookService();
+        BookService service = new BookService(new CollectionBookRepositoryImpl());
 
         // Добавляем книги (теперь без указания ID)
         service.addBook("Clean Code", "Robert Martin", "textbooks");
@@ -11,7 +14,7 @@ public class Main {
         service.addBook("The best Java", "Joshua Bloch", "fantasy");
         service.addBook("The best of the Java", "Joshua Mainer", "fantasy");
 
-        System.out.println(service.findById(1));
+        System.out.println(service.getById(1));
         System.out.println("*****");
         System.out.println(service.findByName("Effective Java"));
         System.out.println("*****");

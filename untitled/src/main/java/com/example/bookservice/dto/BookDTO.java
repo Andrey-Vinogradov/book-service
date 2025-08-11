@@ -1,21 +1,14 @@
-package com.example.bookservice;
+package com.example.bookservice.dto;
 
-public class Book {
-    private final int id;
+public class BookDTO {
     private final String name;
     private final String author;
     private final String genre;
 
-    public Book(int id, String name, String author, String genre) {
-        this.id = id;
+    public BookDTO(String name, String author, String genre) {
         this.name = name;
         this.author = author;
         this.genre = genre;
-    }
-
-
-    public int getId() {
-        return id;
     }
 
     public String getName() {
@@ -32,9 +25,8 @@ public class Book {
 
     @Override
     public String toString() {
-        return "Book{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
+        return "BookDTO{" +
+                "name='" + name + '\'' +
                 ", author='" + author + '\'' +
                 ", genre='" + genre + '\'' +
                 '}';
