@@ -5,17 +5,18 @@ import com.example.bookservice.model.Book;
 import com.example.bookservice.repository.BookRepository;
 import com.example.bookservice.repository.CollectionBookRepositoryImpl;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.NoSuchElementException;
+
 
 public class BookService {
 
     private final BookRepository bookRepository;
-
     public BookService(BookRepository bookRepository) {
         this.bookRepository = bookRepository;
     }
-
-
     private void log(String message) {
         System.out.println("[LOG] " + message);
     }
@@ -44,8 +45,10 @@ public class BookService {
         }
 
         // Удаляем книгу из всех индексов
-        booksByName.get(book.getName()).remove(book);
-        booksByAuthor.get(book.getAuthor()).remove(book);
+        //booksByName.get(book.getName()).remove(book);
+        booksByName.remove(book.getName());
+        //booksByAuthor.get(book.getAuthor()).remove(book);
+        booksByAuthor.remove(book.getAuthor());
         //booksByGenre.get(book.getGenre()).remove(book);
         booksByGenre.remove(book.getGenre());
 
