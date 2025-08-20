@@ -1,5 +1,6 @@
 package com.example.bookservice;
 
+import com.example.bookservice.exception.BookNotFoundException;
 import com.example.bookservice.repository.CollectionBookRepositoryImpl;
 import com.example.bookservice.service.BookService;
 
@@ -22,16 +23,21 @@ public class Main {
         System.out.println("*****");
         System.out.println(service.findByGenre("textbooks"));
         System.out.println("*****");
-        System.out.println(service.getAllBooks());
+        System.out.println(service.findAllBooks());
         System.out.println("*****");
 
         // Удаляем книгу с ID 3
-        service.deleteBook(3);
+        try {
+            service.deleteBook(9);
+        } catch (BookNotFoundException e){
+            System.out.println("Error " + e.getMessage());
+        }
+
         System.out.println("*****");
-        System.out.println(service.getAllBooks());
+        System.out.println(service.findAllBooks());
 
         // Добавляем новую книгу - она должна получить ID 3 (освобожденный)
         service.addBook("Next book of the Java", "Kevin Mainer", "fantasy");
-        System.out.println(service.getAllBooks());
+        System.out.println(service.findAllBooks());
     }
 }
