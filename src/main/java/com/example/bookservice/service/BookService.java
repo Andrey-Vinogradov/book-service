@@ -6,7 +6,6 @@ import com.example.bookservice.model.Book;
 import com.example.bookservice.repository.BookRepository;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 
 public class BookService {
@@ -48,8 +47,6 @@ public class BookService {
         if (book == null) {
             log("Book with ID " + id + " not found");
             throw new BookNotFoundException(id);
-        } else {
-            log("Found book by ID: " + id);
         }
         return book;
     }
