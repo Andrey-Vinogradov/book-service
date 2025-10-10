@@ -31,4 +31,19 @@ public class BookDTO {
                 ", genre='" + genre + '\'' +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BookDTO bookDTO = (BookDTO) o;
+        return java.util.Objects.equals(name, bookDTO.name) &&
+                java.util.Objects.equals(author, bookDTO.author) &&
+                java.util.Objects.equals(genre, bookDTO.genre);
+    }
+
+    @Override
+    public int hashCode() {
+        return java.util.Objects.hash(name, author, genre);
+    }
 }

@@ -4,7 +4,7 @@ import com.example.bookservice.dto.BookDTO;
 import com.example.bookservice.exception.BookNotFoundException;
 import com.example.bookservice.model.Book;
 import com.example.bookservice.repository.BookRepository;
-import org.junit.jupiter.api.BeforeEach;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -25,9 +25,10 @@ public class BookServiceTest {
     @InjectMocks
     private BookService bookService;
 
+    // === addBook ===
+
     @Test
     public void addBook_shouldThrowIllegalArgumentException_whenAnyFieldIsNull() {
-
         assertThrows(IllegalArgumentException.class, () -> bookService.addBook(null, "Author", "Genre"));
         assertThrows(IllegalArgumentException.class, () -> bookService.addBook("Name", null, "Genre"));
         assertThrows(IllegalArgumentException.class, () -> bookService.addBook("Name", "Author", null));
@@ -35,21 +36,108 @@ public class BookServiceTest {
 
     @Test
     public void addBook_shouldCallRepositorySave_whenFieldsAreValid() {
+        // Arrange
         String name = "1984";
         String author = "George Orwell";
         String genre = "Dystopia";
+        BookDTO expectedDTO = new BookDTO(name, author, genre);
 
+        // Act
         bookService.addBook(name, author, genre);
 
-        BookDTO expectedDTO = new BookDTO(name, author, genre);
-        verify(bookRepository).save(expectedDTO);
+        // Assert
+        verify(bookRepository).save(expectedDTO); // работает благодаря equals() в BookDTO!
     }
+
+    // === getById ===
 
     @Test
     public void getById_shouldThrowBookNotFoundException_whenBookDoesNotExist() {
-        int id = 999;
-        when(bookRepository.findById(id)).thenReturn(null);
+        when(bookRepository.findById(999)).thenReturn(null);
+        assertThrows(BookNotFoundException.class, () -> bookService.getById(999));
+    }
 
-        assertThrows(BookNotFoundException.class, () -> bookService.getById(id));
+    @Test
+    public void getById_shouldReturnBook_whenBookExists() {
+        // Arrange
+        Book expectedBook = new Book(1, "1984", "George Orwell", "Dystopia");
+        when(bookRepository.findById(1)).thenReturn(expectedBook);
+
+        // Act
+        Book result = bookService.getById(1);
+
+        // Assert
+        assertEquals(expectedBook, result); // работает благодаря equals() в Book!
+    }
+
+    // === deleteBook ===
+
+    @Test
+    public void deleteBook_shouldCallRepositoryDelete() {
+        // Act
+        bookService.deleteBook(5);
+
+        // Assert
+        verify(bookRepository).delete(5);
+    }
+
+    // === findByName ===
+
+    @Test
+    public void findByName_shouldReturnBooks_whenBooksExist() {
+        List<Book> expected = List.of(
+                new Book(1, "1984", "George Orwell", "Dystopia"),
+                new Book(2, "1984: The Sequel", "George Orwell", "Dystopia")
+        );
+        when(bookRepository.findByName("1984")).thenReturn(expected);
+
+        List<Book> result = bookService.findByName("1984");
+
+        assertEquals(expected, result); // полное сравнение списков!
+    }
+
+    @Test
+    public void findByName_shouldReturnEmptyList_whenNoBooksFound() {
+        when(bookRepository.findByName("Unknown")).thenReturn(List.of());
+        assertEquals(List.of(), bookService.findByName("Unknown"));
+    }
+
+    @Test
+    public void findByName_shouldHandleNullName() {
+        when(bookRepository.findByName(null)).thenReturn(List.of());
+        assertEquals(List.of(), bookService.findByName(null));
+    }
+
+    // === findByAuthor ===
+
+    @Test
+    public void findByAuthor_shouldReturnBooks() {
+        List<Book> expected = List.of(new Book(1, "Animal Farm", "George Orwell", "Satire"));
+        when(bookRepository.findByAuthor("George Orwell")).thenReturn(expected);
+
+        assertEquals(expected, bookService.findByAuthor("George Orwell"));
+    }
+
+    // === findByGenre ===
+
+    @Test
+    public void findByGenre_shouldReturnBooks() {
+        List<Book> expected = List.of(new Book(1, "Dune", "Frank Herbert", "Sci-Fi"));
+        when(bookRepository.findByGenre("Sci-Fi")).thenReturn(expected);
+
+        assertEquals(expected, bookService.findByGenre("Sci-Fi"));
+    }
+
+    // === findAllBooks ===
+
+    @Test
+    public void findAllBooks_shouldReturnAllBooks() {
+        List<Book> expected = List.of(
+                new Book(1, "Book1", "Author1", "Genre1"),
+                new Book(2, "Book2", "Author2", "Genre2")
+        );
+        when(bookRepository.findAll()).thenReturn(expected);
+
+        assertEquals(expected, bookService.findAllBooks());
     }
 }
