@@ -13,9 +13,9 @@ public class BookDTOTest {
 
         BookDTO bookDTO = new BookDTO(name, author, genre);
 
-        assertEquals(name, bookDTO.getName());
-        assertEquals(author, bookDTO.getAuthor());
-        assertEquals(genre, bookDTO.getGenre());
+        assertEquals(name, bookDTO.name());
+        assertEquals(author, bookDTO.author());
+        assertEquals(genre, bookDTO.genre());
     }
 
     @Test

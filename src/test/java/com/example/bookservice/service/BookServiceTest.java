@@ -25,7 +25,6 @@ public class BookServiceTest {
     @InjectMocks
     private BookService bookService;
 
-    // === addBook ===
 
     @Test
     public void addBook_shouldThrowIllegalArgumentException_whenAnyFieldIsNull() {
@@ -36,20 +35,16 @@ public class BookServiceTest {
 
     @Test
     public void addBook_shouldCallRepositorySave_whenFieldsAreValid() {
-        // Arrange
         String name = "1984";
         String author = "George Orwell";
         String genre = "Dystopia";
         BookDTO expectedDTO = new BookDTO(name, author, genre);
 
-        // Act
         bookService.addBook(name, author, genre);
 
-        // Assert
-        verify(bookRepository).save(expectedDTO); // работает благодаря equals() в BookDTO!
+        verify(bookRepository).save(expectedDTO);
     }
 
-    // === getById ===
 
     @Test
     public void getById_shouldThrowBookNotFoundException_whenBookDoesNotExist() {
@@ -59,29 +54,20 @@ public class BookServiceTest {
 
     @Test
     public void getById_shouldReturnBook_whenBookExists() {
-        // Arrange
         Book expectedBook = new Book(1, "1984", "George Orwell", "Dystopia");
         when(bookRepository.findById(1)).thenReturn(expectedBook);
 
-        // Act
         Book result = bookService.getById(1);
 
-        // Assert
-        assertEquals(expectedBook, result); // работает благодаря equals() в Book!
+        assertEquals(expectedBook, result);
     }
-
-    // === deleteBook ===
 
     @Test
     public void deleteBook_shouldCallRepositoryDelete() {
-        // Act
         bookService.deleteBook(5);
 
-        // Assert
         verify(bookRepository).delete(5);
     }
-
-    // === findByName ===
 
     @Test
     public void findByName_shouldReturnBooks_whenBooksExist() {
@@ -93,7 +79,7 @@ public class BookServiceTest {
 
         List<Book> result = bookService.findByName("1984");
 
-        assertEquals(expected, result); // полное сравнение списков!
+        assertEquals(expected, result);
     }
 
     @Test
@@ -108,8 +94,6 @@ public class BookServiceTest {
         assertEquals(List.of(), bookService.findByName(null));
     }
 
-    // === findByAuthor ===
-
     @Test
     public void findByAuthor_shouldReturnBooks() {
         List<Book> expected = List.of(new Book(1, "Animal Farm", "George Orwell", "Satire"));
@@ -118,8 +102,6 @@ public class BookServiceTest {
         assertEquals(expected, bookService.findByAuthor("George Orwell"));
     }
 
-    // === findByGenre ===
-
     @Test
     public void findByGenre_shouldReturnBooks() {
         List<Book> expected = List.of(new Book(1, "Dune", "Frank Herbert", "Sci-Fi"));
@@ -127,8 +109,6 @@ public class BookServiceTest {
 
         assertEquals(expected, bookService.findByGenre("Sci-Fi"));
     }
-
-    // === findAllBooks ===
 
     @Test
     public void findAllBooks_shouldReturnAllBooks() {

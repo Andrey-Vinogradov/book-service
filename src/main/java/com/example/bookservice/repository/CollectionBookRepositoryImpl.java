@@ -42,7 +42,7 @@ public class CollectionBookRepositoryImpl implements BookRepository {
     @Override
     public void save(BookDTO dto) {
         int id = getNextAvailableId();
-        Book bookToSave = new Book(id, dto.getName(), dto.getAuthor(), dto.getGenre());
+        Book bookToSave = new Book(id, dto.name(), dto.author(), dto.genre());
 
         booksById.put(id, bookToSave);
         booksByName.computeIfAbsent(bookToSave.getName(), k -> new ArrayList<>()).add(bookToSave);
@@ -63,14 +63,23 @@ public class CollectionBookRepositoryImpl implements BookRepository {
     }
     @Override
     public List<Book> findByName(String name){
+        if (name == null){
+            return Collections.emptyList();
+        }
         return booksByName.getOrDefault(name, Collections.emptyList());
     }
     @Override
     public List<Book> findByAuthor(String author){
+        if(author == null){
+            return Collections.emptyList();
+        }
         return booksByAuthor.getOrDefault(author, Collections.emptyList());
     }
     @Override
     public List<Book> findByGenre(String genre){
+        if(genre == null){
+            return Collections.emptyList();
+        }
         return booksByGenre.getOrDefault(genre, Collections.emptyList());
     }
     @Override
