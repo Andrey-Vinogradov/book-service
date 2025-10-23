@@ -24,7 +24,7 @@ public class BookDTOTest {
 
         String result = bookDTO.toString();
 
-        String expected = "BookDTO{name='The Silmarillion', author='J. R. R. Tolkien', genre='Fantasy'}";
+        String expected = "BookDTO[name=The Silmarillion, author=J. R. R. Tolkien, genre=Fantasy]";
         assertEquals(expected, result);
     }
 }
