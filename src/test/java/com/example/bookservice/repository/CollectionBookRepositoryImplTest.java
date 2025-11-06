@@ -74,7 +74,7 @@ public class CollectionBookRepositoryImplTest {
 
     @Test
     public void findByName_shouldReturnBooks_whenBooksExist() {
-        // Arrange: Добавляем книги с разными именами
+
         BookDTO dto1 = new BookDTO("Book A", "Author X", "Genre 1");
         BookDTO dto2 = new BookDTO("Book B", "Author Y", "Genre 2");
         BookDTO dto3 = new BookDTO("Book A", "Author Z", "Genre 3");
@@ -100,7 +100,6 @@ public class CollectionBookRepositoryImplTest {
         List<Book> foundBooks = repository.findByName("Non-existent Book");
 
         assertTrue(foundBooks.isEmpty(), "Should return an empty list for non-existent name");
-        assertEquals(List.of(), foundBooks, "Should return an empty list for non-existent name");
     }
 
     @Test
@@ -108,12 +107,11 @@ public class CollectionBookRepositoryImplTest {
         List<Book> foundBooks = repository.findByName(null);
 
         assertTrue(foundBooks.isEmpty(), "Should return an empty list for null name");
-        assertEquals(List.of(), foundBooks, "Should return an empty list for null name");
     }
 
     @Test
     public void findByAuthor_shouldReturnBooks_whenBooksExist() {
-        // Arrange: Добавляем книги с разными авторами
+
         BookDTO dto1 = new BookDTO("Book A", "Author X", "Genre 1");
         BookDTO dto2 = new BookDTO("Book B", "Author Y", "Genre 2");
         BookDTO dto3 = new BookDTO("Book C", "Author X", "Genre 3");
@@ -138,7 +136,6 @@ public class CollectionBookRepositoryImplTest {
         List<Book> foundBooks = repository.findByAuthor("Non-existent Author");
 
         assertTrue(foundBooks.isEmpty(), "Should return an empty list for non-existent author");
-        assertEquals(List.of(), foundBooks, "Should return an empty list for non-existent author");
     }
 
     @Test
@@ -146,7 +143,7 @@ public class CollectionBookRepositoryImplTest {
         List<Book> foundBooks = repository.findByAuthor(null);
 
         assertTrue(foundBooks.isEmpty(), "Should return an empty list for null author");
-        assertEquals(List.of(), foundBooks, "Should return an empty list for null author");
+
     }
 
     @Test
@@ -175,7 +172,7 @@ public class CollectionBookRepositoryImplTest {
         List<Book> foundBooks = repository.findByGenre("Non-existent Genre");
 
         assertTrue(foundBooks.isEmpty(), "Should return an empty list for non-existent genre");
-        assertEquals(List.of(), foundBooks, "Should return an empty list for non-existent genre");
+
     }
 
     @Test
@@ -183,7 +180,7 @@ public class CollectionBookRepositoryImplTest {
         List<Book> foundBooks = repository.findByGenre(null);
 
         assertTrue(foundBooks.isEmpty(), "Should return an empty list for null genre");
-        assertEquals(List.of(), foundBooks, "Should return an empty list for null genre");
+
     }
 
 }
