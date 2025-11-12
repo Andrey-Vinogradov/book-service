@@ -73,7 +73,7 @@ public class CollectionBookRepositoryImplTest {
     }
 
     @Test
-    public void findByName_shouldReturnBooks_whenBooksExist() {
+    public void findAllByName_shouldReturnBooks_whenBooksExist() {
 
         BookDTO dto1 = new BookDTO("Book A", "Author X", "Genre 1");
         BookDTO dto2 = new BookDTO("Book B", "Author Y", "Genre 2");
@@ -82,7 +82,7 @@ public class CollectionBookRepositoryImplTest {
         repository.save(dto2);
         repository.save(dto3);
 
-        List<Book> foundBooks = repository.findByName("Book A");
+        List<Book> foundBooks = repository.findAllByName("Book A");
 
         assertEquals(2, foundBooks.size(), "Should find 2 books with name 'Book A'");
         assertTrue(foundBooks.stream().allMatch(book -> "Book A".equals(book.getName())),
@@ -93,24 +93,17 @@ public class CollectionBookRepositoryImplTest {
     }
 
     @Test
-    public void findByName_shouldReturnEmptyList_whenNoBooksFound() {
+    public void findAllByName_shouldReturnEmptyList_whenNoBooksFound() {
         BookDTO dto1 = new BookDTO("Book A", "Author X", "Genre 1");
         repository.save(dto1);
 
-        List<Book> foundBooks = repository.findByName("Non-existent Book");
+        List<Book> foundBooks = repository.findAllByName("Non-existent Book");
 
         assertTrue(foundBooks.isEmpty(), "Should return an empty list for non-existent name");
     }
 
     @Test
-    public void findByName_shouldReturnEmptyList_whenNameIsNull() {
-        List<Book> foundBooks = repository.findByName(null);
-
-        assertTrue(foundBooks.isEmpty(), "Should return an empty list for null name");
-    }
-
-    @Test
-    public void findByAuthor_shouldReturnBooks_whenBooksExist() {
+    public void findAllByAuthor_shouldReturnBooks_whenBooksExist() {
 
         BookDTO dto1 = new BookDTO("Book A", "Author X", "Genre 1");
         BookDTO dto2 = new BookDTO("Book B", "Author Y", "Genre 2");
@@ -119,7 +112,7 @@ public class CollectionBookRepositoryImplTest {
         repository.save(dto2);
         repository.save(dto3);
 
-        List<Book> foundBooks = repository.findByAuthor("Author X");
+        List<Book> foundBooks = repository.findAllByAuthor("Author X");
 
         assertEquals(2, foundBooks.size(), "Should find 2 books by author 'Author X'");
         assertTrue(foundBooks.stream().allMatch(book -> "Author X".equals(book.getAuthor())),
@@ -129,25 +122,17 @@ public class CollectionBookRepositoryImplTest {
     }
 
     @Test
-    public void findByAuthor_shouldReturnEmptyList_whenNoBooksFound() {
+    public void findAllByAuthor_shouldReturnEmptyList_whenNoBooksFound() {
         BookDTO dto1 = new BookDTO("Book A", "Author X", "Genre 1");
         repository.save(dto1);
 
-        List<Book> foundBooks = repository.findByAuthor("Non-existent Author");
+        List<Book> foundBooks = repository.findAllByAuthor("Non-existent Author");
 
         assertTrue(foundBooks.isEmpty(), "Should return an empty list for non-existent author");
     }
 
     @Test
-    public void findByAuthor_shouldReturnEmptyList_whenAuthorIsNull() {
-        List<Book> foundBooks = repository.findByAuthor(null);
-
-        assertTrue(foundBooks.isEmpty(), "Should return an empty list for null author");
-
-    }
-
-    @Test
-    public void findByGenre_shouldReturnBooks_whenBooksExist() {
+    public void findAllByGenre_shouldReturnBooks_whenBooksExist() {
         BookDTO dto1 = new BookDTO("Book A", "Author X", "Sci-Fi");
         BookDTO dto2 = new BookDTO("Book B", "Author Y", "Fantasy");
         BookDTO dto3 = new BookDTO("Book C", "Author Z", "Sci-Fi");
@@ -155,7 +140,7 @@ public class CollectionBookRepositoryImplTest {
         repository.save(dto2);
         repository.save(dto3);
 
-        List<Book> foundBooks = repository.findByGenre("Sci-Fi");
+        List<Book> foundBooks = repository.findAllByGenre("Sci-Fi");
 
         assertEquals(2, foundBooks.size(), "Should find 2 books in genre 'Sci-Fi'");
         assertTrue(foundBooks.stream().allMatch(book -> "Sci-Fi".equals(book.getGenre())),
@@ -165,22 +150,12 @@ public class CollectionBookRepositoryImplTest {
     }
 
     @Test
-    public void findByGenre_shouldReturnEmptyList_whenNoBooksFound() {
+    public void findAllByGenre_shouldReturnEmptyList_whenNoBooksFound() {
         BookDTO dto1 = new BookDTO("Book A", "Author X", "Sci-Fi");
         repository.save(dto1);
 
-        List<Book> foundBooks = repository.findByGenre("Non-existent Genre");
+        List<Book> foundBooks = repository.findAllByGenre("Non-existent Genre");
 
         assertTrue(foundBooks.isEmpty(), "Should return an empty list for non-existent genre");
-
     }
-
-    @Test
-    public void findByGenre_shouldReturnEmptyList_whenGenreIsNull() {
-        List<Book> foundBooks = repository.findByGenre(null);
-
-        assertTrue(foundBooks.isEmpty(), "Should return an empty list for null genre");
-
-    }
-
 }

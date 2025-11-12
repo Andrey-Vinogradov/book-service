@@ -52,19 +52,19 @@ public class BookService {
     }
 
     public List<Book> findByName(String name) {
-        List<Book> books = bookRepository.findByName(name);
+        List<Book> books = bookRepository.findAllByName(name);
         log("Found " + books.size() + " books by name: " + name);
         return books;
     }
 
     public List<Book> findByAuthor(String author) {
-        List<Book> books = bookRepository.findByAuthor(author);
+        List<Book> books = bookRepository.findAllByAuthor(author);
         log("Found " + books.size() + " books by author: " + author);
         return books;
     }
 
     public List<Book> findByGenre(String genre) {
-        List<Book> books = bookRepository.findByGenre(genre);
+        List<Book> books = bookRepository.findAllByGenre(genre);
         log("Found " + books.size() + " books by genre: " + genre);
         return books;
     }

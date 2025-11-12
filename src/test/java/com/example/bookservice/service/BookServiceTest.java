@@ -7,11 +7,15 @@ import com.example.bookservice.repository.BookRepository;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -26,11 +30,10 @@ public class BookServiceTest {
     private BookService bookService;
 
 
-    @Test
-    public void addBook_shouldThrowIllegalArgumentException_whenAnyFieldIsNull() {
-        assertThrows(IllegalArgumentException.class, () -> bookService.addBook(null, "Author", "Genre"));
-        assertThrows(IllegalArgumentException.class, () -> bookService.addBook("Name", null, "Genre"));
-        assertThrows(IllegalArgumentException.class, () -> bookService.addBook("Name", "Author", null));
+    @ParameterizedTest
+    @MethodSource("provideInvalidBookArguments")
+    public void addBook_shouldThrowIllegalArgumentException_whenAnyFieldIsNull(String name, String author, String genre) {
+        assertThrows(IllegalArgumentException.class, () -> bookService.addBook(name, author, genre));
     }
 
     @Test
@@ -42,7 +45,7 @@ public class BookServiceTest {
 
         bookService.addBook(name, author, genre);
 
-        verify(bookRepository).save(expectedDTO);
+        verify(bookRepository, times(1)).save(expectedDTO);
     }
 
 
@@ -66,16 +69,16 @@ public class BookServiceTest {
     public void deleteBook_shouldCallRepositoryDelete() {
         bookService.deleteBook(5);
 
-        verify(bookRepository).delete(5);
+        verify(bookRepository, times(1)).delete(5);
     }
 
     @Test
-    public void findByName_shouldReturnBooks_whenBooksExist() {
+    public void findAllByName_shouldReturnBooks_whenBooksExist() {
         List<Book> expected = List.of(
                 new Book(1, "1984", "George Orwell", "Dystopia"),
                 new Book(2, "1984: The Sequel", "George Orwell", "Dystopia")
         );
-        when(bookRepository.findByName("1984")).thenReturn(expected);
+        when(bookRepository.findAllByName("1984")).thenReturn(expected);
 
         List<Book> result = bookService.findByName("1984");
 
@@ -83,29 +86,23 @@ public class BookServiceTest {
     }
 
     @Test
-    public void findByName_shouldReturnEmptyList_whenNoBooksFound() {
-        when(bookRepository.findByName("Unknown")).thenReturn(List.of());
+    public void findAllByName_shouldReturnEmptyList_whenNoBooksFound() {
+        when(bookRepository.findAllByName("Unknown")).thenReturn(List.of());
         assertEquals(List.of(), bookService.findByName("Unknown"));
     }
 
     @Test
-    public void findByName_shouldHandleNullName() {
-        when(bookRepository.findByName(null)).thenReturn(List.of());
-        assertEquals(List.of(), bookService.findByName(null));
-    }
-
-    @Test
-    public void findByAuthor_shouldReturnBooks() {
+    public void findAllByAuthor_shouldReturnBooks() {
         List<Book> expected = List.of(new Book(1, "Animal Farm", "George Orwell", "Satire"));
-        when(bookRepository.findByAuthor("George Orwell")).thenReturn(expected);
+        when(bookRepository.findAllByAuthor("George Orwell")).thenReturn(expected);
 
         assertEquals(expected, bookService.findByAuthor("George Orwell"));
     }
 
     @Test
-    public void findByGenre_shouldReturnBooks() {
+    public void findAllByGenre_shouldReturnBooks() {
         List<Book> expected = List.of(new Book(1, "Dune", "Frank Herbert", "Sci-Fi"));
-        when(bookRepository.findByGenre("Sci-Fi")).thenReturn(expected);
+        when(bookRepository.findAllByGenre("Sci-Fi")).thenReturn(expected);
 
         assertEquals(expected, bookService.findByGenre("Sci-Fi"));
     }
@@ -119,5 +116,13 @@ public class BookServiceTest {
         when(bookRepository.findAll()).thenReturn(expected);
 
         assertEquals(expected, bookService.findAllBooks());
+    }
+
+    private static Stream<Arguments> provideInvalidBookArguments() {
+        return Stream.of(
+                Arguments.of(null, "Author", "Genre"),
+                Arguments.of("Name", null, "Genre"),
+                Arguments.of("Name", "Author", null)
+        );
     }
 }

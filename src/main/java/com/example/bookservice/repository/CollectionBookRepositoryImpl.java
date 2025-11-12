@@ -62,21 +62,21 @@ public class CollectionBookRepositoryImpl implements BookRepository {
         availableIds.add(id);
     }
     @Override
-    public List<Book> findByName(String name){
+    public List<Book> findAllByName(String name){
         if (name == null){
             return Collections.emptyList();
         }
         return booksByName.getOrDefault(name, Collections.emptyList());
     }
     @Override
-    public List<Book> findByAuthor(String author){
+    public List<Book> findAllByAuthor(String author){
         if(author == null){
             return Collections.emptyList();
         }
         return booksByAuthor.getOrDefault(author, Collections.emptyList());
     }
     @Override
-    public List<Book> findByGenre(String genre){
+    public List<Book> findAllByGenre(String genre){
         if(genre == null){
             return Collections.emptyList();
         }
