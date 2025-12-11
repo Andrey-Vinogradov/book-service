@@ -13,11 +13,11 @@ public interface BookRepository {
 
     void delete(int id);
 
-    List<Book> findByName(String name);
+    List<Book> findAllByName(String name);
 
-    List<Book> findByAuthor(String author);
+    List<Book> findAllByAuthor(String author);
 
-    List<Book> findByGenre(String genre);
+    List<Book> findAllByGenre(String genre);
 
     List<Book> findAll();
 }
